@@ -13,10 +13,16 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.Settings;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import java.time.Instant;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +78,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         createNotificationChannel();
+
+        Button nextAlarm = findViewById(R.id.nextAlarm);
+        nextAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String toastMessage;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if (alarmManager != null) {
+                        toastMessage = new Date(alarmManager.getNextAlarmClock().getTriggerTime()).toString();
+                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+            }
+        });
 
     }
 
